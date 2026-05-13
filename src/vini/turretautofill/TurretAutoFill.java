@@ -21,7 +21,7 @@ import mindustry.type.Item;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
 
 public class TurretAutoFill extends Mod {
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final float TRANSFER_DELAY = 10f;
     private static final float TRANSFER_CONFIRM_TIMEOUT = 12f;
