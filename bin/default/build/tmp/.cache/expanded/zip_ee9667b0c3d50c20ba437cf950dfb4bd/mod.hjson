@@ -14,14 +14,13 @@ main: "vini.turretautofill.TurretAutoFill"
 description: "Name says it. Kid is bwaaa"
 
 #the mod version
-version: 0.5.1
+version: 0.4
 
 #the minimum game build required to run this mod
 minGameVersion: 154
 
 #this is a java mod
 java: true
-githubRelease: true
-repo: "Vini230909/TurretAutoFill"
+
 hidden: true
 legacyCompatible: true
