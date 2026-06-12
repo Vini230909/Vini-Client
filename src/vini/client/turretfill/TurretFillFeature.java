@@ -1,4 +1,4 @@
-package vini.turretautofill;
+package vini.client.turretfill;
 
 import arc.Core;
 import arc.Events;
@@ -16,11 +16,11 @@ import mindustry.gen.Building;
 import mindustry.gen.Call;
 import mindustry.gen.Tex;
 import mindustry.gen.Unit;
-import mindustry.mod.Mod;
 import mindustry.type.Item;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
+import vini.client.ViniFeature;
 
-public class TurretAutoFill extends Mod {
+public class TurretFillFeature implements ViniFeature {
     private static final boolean DEBUG = false;
 
     private static final float TRANSFER_DELAY = 10f;
@@ -73,10 +73,11 @@ public class TurretAutoFill extends Mod {
     private Table debugTable;
     private Label debugLabel;
 
-    public TurretAutoFill() {
-        Log.info("TurretAutoFill loaded.");
+    @Override
+    public void init() {
+        Log.info("Turret Fill feature loaded.");
 
-        TAFKeybinds.load();
+        TurretFillKeybinds.load();
 
         Events.on(EventType.ClientLoadEvent.class, event -> {
             createDebugUi();
@@ -84,18 +85,18 @@ public class TurretAutoFill extends Mod {
         });
 
         Events.run(EventType.Trigger.update, () -> {
-            if(Core.input.keyTap(TAFKeybinds.toggle)){
+            if(Core.input.keyTap(TurretFillKeybinds.toggle)){
                 enabled = !enabled;
 
                 resetRuntimeState();
 
                 if(enabled){
-                    showToast("Auto Fill: [lightgray]Enabled");
+                    showToast("Turret Fill: [lightgray]Enabled");
                 }else{
-                    showToast("Auto Fill: [scarlet]Disabled");
+                    showToast("Turret Fill: [scarlet]Disabled");
                 }
 
-                Log.info("TurretAutoFill: " + (enabled ? "Enabled" : "Disabled"));
+                Log.info("Turret Fill: " + (enabled ? "Enabled" : "Disabled"));
             }
 
             updateAutoFill();
@@ -287,44 +288,45 @@ public class TurretAutoFill extends Mod {
 
         return false;
     }
-        private void finishCoreSession(Unit unit, Building core) {
-            Item heldItem = unit.item();
-            int heldAmount = unit.stack.amount;
 
-            if(heldItem != null && heldAmount > 0){
-                if(restoringOriginalItem && originalItem != null && heldItem == originalItem){
-                    restoringOriginalItem = false;
-                    coreSessionActive = false;
-                    coreSessionDone = true;
-                    originalItem = null;
-                    lastOriginalItem = "None";
-                    return;
-                }
+    private void finishCoreSession(Unit unit, Building core) {
+        Item heldItem = unit.item();
+        int heldAmount = unit.stack.amount;
 
-                if(originalItem != null && heldItem == originalItem){
-                    coreSessionActive = false;
-                    coreSessionDone = true;
-                    originalItem = null;
-                    lastOriginalItem = "None";
-                    return;
-                }
-
-                dropHeldItemToCore(unit, core);
+        if(heldItem != null && heldAmount > 0){
+            if(restoringOriginalItem && originalItem != null && heldItem == originalItem){
+                restoringOriginalItem = false;
+                coreSessionActive = false;
+                coreSessionDone = true;
+                originalItem = null;
+                lastOriginalItem = "None";
                 return;
             }
 
-            if(originalItem != null && core.items != null && core.items.has(originalItem, MIN_CORE_ITEMS)){
-                restoringOriginalItem = true;
-                requestItemFromCore(core, originalItem);
+            if(originalItem != null && heldItem == originalItem){
+                coreSessionActive = false;
+                coreSessionDone = true;
+                originalItem = null;
+                lastOriginalItem = "None";
                 return;
             }
 
-            coreSessionActive = false;
-            coreSessionDone = true;
-            originalItem = null;
-            lastOriginalItem = "None";
-            restoringOriginalItem = false;
+            dropHeldItemToCore(unit, core);
+            return;
         }
+
+        if(originalItem != null && core.items != null && core.items.has(originalItem, MIN_CORE_ITEMS)){
+            restoringOriginalItem = true;
+            requestItemFromCore(core, originalItem);
+            return;
+        }
+
+        coreSessionActive = false;
+        coreSessionDone = true;
+        originalItem = null;
+        lastOriginalItem = "None";
+        restoringOriginalItem = false;
+    }
 
     private void dropHeldItemToCore(Unit unit, Building core) {
         Item heldItem = unit.item();
@@ -575,7 +577,7 @@ public class TurretAutoFill extends Mod {
         int amount = unit.stack.amount;
 
         debugLabel.setText(
-            "Auto Fill: [lightgray]ON\n" +
+            "Turret Fill: [lightgray]ON\n" +
             "Turrets: [lightgray]" + lastTurretCount + "\n" +
             "Compatible: [lightgray]" + lastCompatibleCount + "\n" +
             "Filled: [lightgray]" + lastFilledCount + "\n" +
@@ -644,6 +646,6 @@ public class TurretAutoFill extends Mod {
 
     @Override
     public void loadContent() {
-        Log.info("TurretAutoFill content loaded.");
+        Log.info("Turret Fill content loaded.");
     }
 }

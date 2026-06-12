@@ -1,4 +1,4 @@
-package vini.turretautofill;
+package vini.client.turretfill;
 
 import arc.Core;
 import arc.graphics.Color;
@@ -24,7 +24,8 @@ import mindustry.world.Block;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
 
 public class AmmoPriorities {
-    private static final String SETTING_PREFIX = "taf-ammo-priority-";
+    private static final String SETTING_PREFIX = "vini-turretfill-ammo-priority-";
+    private static final String LEGACY_SETTING_PREFIX = "taf-ammo-priority-";
 
     private static final float ICON_SIZE = 30f;
     private static final float BOX_SIZE = 46f;
@@ -39,7 +40,7 @@ public class AmmoPriorities {
     private static Table dragGhost;
 
     public static void addSettingsCategory() {
-        Vars.ui.settings.addCategory("Turret Auto Fill", Icon.settings, table -> {
+        Vars.ui.settings.addCategory("Vini Client", Icon.settings, table -> {
             table.pref(new SettingsTable.Setting("ammo-priority-editor") {
                 @Override
                 public void add(SettingsTable table) {
@@ -331,6 +332,10 @@ public class AmmoPriorities {
         String raw = Core.settings.getString(key(block), null);
 
         if(raw == null){
+            raw = Core.settings.getString(legacyKey(block), null);
+        }
+
+        if(raw == null){
             return allAmmo;
         }
 
@@ -406,12 +411,17 @@ public class AmmoPriorities {
         for(Block block : Vars.content.blocks()){
             if(block instanceof ItemTurret){
                 Core.settings.remove(key(block));
+                Core.settings.remove(legacyKey(block));
             }
         }
     }
 
     private static String key(Block block) {
         return SETTING_PREFIX + block.name;
+    }
+
+    private static String legacyKey(Block block) {
+        return LEGACY_SETTING_PREFIX + block.name;
     }
 
     private static Item findItem(String name) {

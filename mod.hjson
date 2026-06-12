@@ -1,20 +1,20 @@
 #the mod name as displayed in-game
-displayName: "Turret Auto Fill"
+displayName: "Vini Client"
 
 #the internal name of your mod
-name: "turret-auto-fill"
+name: "vini-client"
 
 #your name
 author: "Vini2309"
 
 #the fully qualified main class of the mod
-main: "vini.turretautofill.TurretAutoFill"
+main: "vini.client.ViniClient"
 
 #the mod description as seen in the mod dialog
-description: "Name says it. Kid is bwaaa"
+description: "Client-side Mindustry tools by Vini. Includes Turret Fill."
 
 #the mod version
-version: 0.5.1
+version: 0.6.0
 
 #the minimum game build required to run this mod
 minGameVersion: 154
@@ -22,6 +22,6 @@ minGameVersion: 154
 #this is a java mod
 java: true
 githubRelease: true
-repo: "Vini230909/TurretAutoFill"
+repo: "Vini230909/Vini-Client"
 hidden: true
 legacyCompatible: true
