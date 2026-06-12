@@ -1,17 +1,16 @@
 package vini.client;
 
-import arc.util.Log;
 import mindustry.mod.Mod;
+import vini.client.bridgeconveyor.BridgePathFeature;
 import vini.client.turretfill.TurretFillFeature;
 
 public class ViniClient extends Mod {
     private final ViniFeature[] features = {
-        new TurretFillFeature()
+        new TurretFillFeature(),
+        new BridgePathFeature()
     };
 
     public ViniClient() {
-        Log.info("Vini Client loaded.");
-
         for(ViniFeature feature : features){
             feature.init();
         }
@@ -22,7 +21,5 @@ public class ViniClient extends Mod {
         for(ViniFeature feature : features){
             feature.loadContent();
         }
-
-        Log.info("Vini Client content loaded.");
     }
 }

@@ -8,7 +8,6 @@ import arc.scene.event.Touchable;
 import arc.scene.ui.Label;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
-import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
 import mindustry.game.EventType;
@@ -75,8 +74,6 @@ public class TurretFillFeature implements ViniFeature {
 
     @Override
     public void init() {
-        Log.info("Turret Fill feature loaded.");
-
         TurretFillKeybinds.load();
 
         Events.on(EventType.ClientLoadEvent.class, event -> {
@@ -95,8 +92,6 @@ public class TurretFillFeature implements ViniFeature {
                 }else{
                     showToast("Turret Fill: [scarlet]Disabled");
                 }
-
-                Log.info("Turret Fill: " + (enabled ? "Enabled" : "Disabled"));
             }
 
             updateAutoFill();
@@ -644,8 +639,4 @@ public class TurretFillFeature implements ViniFeature {
         );
     }
 
-    @Override
-    public void loadContent() {
-        Log.info("Turret Fill content loaded.");
-    }
 }
